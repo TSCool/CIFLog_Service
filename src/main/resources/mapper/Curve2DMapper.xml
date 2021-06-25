@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cif.dao.Curve2DMapper">
+    
+    <select id="getAllCurve2Ds" resultType="Curve2DBean">
+        select * from curve2ds where categoryID = #{categoryID}
+    </select>
+    
+    
+    <select id="getCurve2D" resultType="Curve2DBean">
+        select * from curve2ds where id = #{id}
+    </select>
+
+    <insert id="addCurve2D" parameterType="Curve2DBean" useGeneratedKeys="true" keyProperty="id">
+        insert into curve2ds(name,categoryID,owner,
+        startDepth, endDepth, depthLevel, dataType,
+        curveUnit, depthUnit, propertiesEX, file,
+        timeSampleNum,timeSampleStartTime,timeSampleLevel,timeSampleUnit,
+        createdAt) 
+          values( #{name}, #{categoryID}, #{owner}, 
+          #{startDepth}, #{endDepth}, #{depthLevel}, #{dataType},
+          #{curveUnit}, #{depthUnit}, #{propertiesEX}, #{file},
+          #{timeSampleNum},#{timeSampleStartTime},#{timeSampleLevel},#{timeSampleUnit},
+        now())
+    </insert>
+    
+    <update id="updateCurve2D">
+        update curve2ds set name = #{name}, 
+        categoryID = #{categoryID},
+        owner = #{owner}, 
+        startDepth= #{startDepth}, 
+        endDepth= #{endDepth}, 
+        depthLevel= #{depthLevel}, 
+        dataType= #{dataType},
+        curveUnit= #{curveUnit}, 
+        depthUnit= #{depthUnit}, 
+        propertiesEX= #{propertiesEX}, 
+        file= #{file},
+        timeSampleNum = #{timeSampleNum},
+        timeSampleStartTime = #{timeSampleStartTime},
+        timeSampleLevel = #{timeSampleLevel},
+        timeSampleUnit = #{timeSampleUnit},
+        updatedAt = now()
+          where id = #{id}
+    </update>
+    
+    <delete id="deleteCurve2D"> 
+        delete from curve2ds where id = #{id} 
+    </delete>
+    
+</mapper>

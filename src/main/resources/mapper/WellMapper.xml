@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cif.dao.WellMapper">
+    
+    <select id="getAllWells" resultType="WellBean">
+        select * from wells where workSpaceID = #{workSpaceID}
+    </select>
+    
+    
+    <select id="getWell" resultType="WellBean">
+        select * from wells where id = #{id}
+    </select>
+    
+    
+    <select id="findWell" resultType="WellBean">
+        select * from wells where name = #{name} and workSpaceID = #{workSpaceID}
+    </select>
+
+    <insert id="addWell" parameterType="WellBean" useGeneratedKeys="true" keyProperty="id">
+        insert into wells(name,workSpaceID,owner,wellProperties,createdAt) 
+          values( #{name}, #{workSpaceID}, #{owner},#{wellProperties}, now())
+    </insert>
+    
+    <update id="updateWell">
+        update wells set name = #{name}, 
+        workspaceID = #{workSpaceID},
+        owner = #{owner}, 
+        wellProperties = #{wellProperties}, 
+        updatedAt = now()
+          where id = #{id}
+    </update>
+    
+    <delete id="deleteWell"> 
+        delete from wells where id = #{id} 
+    </delete>
+    
+</mapper>

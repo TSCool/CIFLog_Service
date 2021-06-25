@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cif.dao.PermissionsMapper">
+
+    <insert id="insertPermission" parameterType="PermissionsBean" useGeneratedKeys="true" keyProperty="id">
+        insert into permissions(name,guardName,createdAt)
+          values( #{name},#{guardName},now())
+    </insert>
+
+    <delete id="deletePermission">
+        delete from permissions where id = #{id}
+    </delete>
+
+    <update id="updatePermission">
+        update permissions set name = #{name},guardName = #{guardName},
+        updatedAt = now()
+          where id = #{id}
+    </update>
+
+    <select id="getAllPermissions" resultType="PermissionsBean">
+        select * from permissions
+    </select>
+
+    <select id="findByRoleId" resultType="PermissionsBean">
+        select p.* from permissions p, role_permissions r where p.id = r.permissionId and r.roleID = #{roleId}
+    </select>
+
+    <insert id="assignPermission" useGeneratedKeys="true">
+        insert into role_permissions(roleID,permissionId) values(#{roleId},#{permissionId})
+    </insert>
+
+    <select id="findPermissionByRoleId" resultType="RolePermissionsBean">
+        select * from role_permissions where roleID = #{roleId}
+    </select>
+
+    <delete id="deletePermissionRole">
+        delete from role_permissions where roleID = #{id}
+    </delete>
+
+    <delete id="deleteRolePermissionById">
+        delete from role_permissions where id = #{id}
+    </delete>
+
+    <update id="updateRolePermission">
+        update role_permissions set permissionId = #{permissionId} where id = #{id}
+    </update>
+
+</mapper>

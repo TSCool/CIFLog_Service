@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cif.dao.WorkSpaceMapper">
+    
+    <select id="getAllWorkSpaces" resultType="WorkSpaceBean">
+        <if test="_parameter  != null">
+             select * from workspaces where owner = #{owner}
+        </if>
+        <if test="_parameter  == null">
+           select * from workspaces where owner is null
+        </if>
+    </select>
+
+    <select id="getWorkSpacesByUserId" resultType="WorkSpaceBean">
+        select w.* from workspaces w, workspace_roles u where w.id = u.workspaceID and u.userID = #{userId}
+    </select>
+
+    <select id="getAll" resultType="WorkSpaceBean">
+        select * from workspaces
+    </select>
+    
+    
+    <select id="getWorkSpace" resultType="WorkSpaceBean">
+        select * from workspaces where id = #{id}
+    </select>
+
+    <insert id="addWorkSpace" parameterType="WorkSpaceBean" useGeneratedKeys="true" keyProperty="id">
+        insert into workspaces(name,owner,createdAt) 
+          values( #{name}, #{owner}, now())
+    </insert>
+    
+    <update id="updateWorkSpace">
+        update workspaces set name = #{name}, 
+        owner = #{owner}, 
+        updatedAt = now()
+          where id = #{id}
+    </update>
+    
+    <delete id="deleteWorkSpace"> 
+        delete from workspaces where id = #{id} 
+    </delete>
+
+    <insert id="workspaceAssignUserAndRoles" useGeneratedKeys="true">
+        insert into workspace_roles(workspaceID,userID,roleID) values(#{workspaceId},#{userId},#{roleId})
+    </insert>
+    
+</mapper>

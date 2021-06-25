@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cif.dao.CategoryMapper">
+    
+    <select id="getAllCategorys" resultType="CategoryBean">
+        select * from categorys where wellID = #{wellID}
+    </select>
+    
+    
+    <select id="getCategory" resultType="CategoryBean">
+        select * from categorys where id = #{id}
+    </select>
+
+    <insert id="addCategory" parameterType="CategoryBean" useGeneratedKeys="true" keyProperty="id">
+        insert into categorys(name,owner,wellID,createdAt,
+          categoryDepthUnit,categoryStartDepth,categoryEndDepth,categoryDepthLevel,
+          company,team,project,date,creator, loggingNo) 
+          values( #{name}, #{owner},#{wellID}, now(),
+          #{categoryDepthUnit},#{categoryStartDepth},#{categoryEndDepth},#{categoryDepthLevel},
+          #{company},#{team},#{project},#{date},#{creator},#{loggingNo})
+    </insert>
+    
+    <update id="updateCategory">
+        update categorys set name = #{name}, 
+        owner = #{owner},
+        wellID = #{wellID},
+        categoryDepthUnit = #{categoryDepthUnit},
+        categoryStartDepth = #{categoryStartDepth},
+        categoryEndDepth = #{categoryEndDepth},
+        categoryDepthLevel = #{categoryDepthLevel},
+        company = #{company},
+        team = #{team},
+        project = #{project},
+        date = #{date},
+        creator = #{creator},
+        loggingNo = #{loggingNo},
+        updatedAt = now()
+          where id = #{id}
+    </update>
+    
+    <delete id="deleteCategory"> 
+        delete from categorys where id = #{id} 
+    </delete>
+    
+</mapper>

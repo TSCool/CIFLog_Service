@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cif.dao.TableMapper">
+    
+    <select id="getAllTables" resultType="TableBean">
+        select * from tables where categoryID = #{categoryID}
+    </select>
+    
+    <select id="getTablesByLoggingType" resultType="TableBean">
+        select * from tables where categoryID = #{categoryID} and loggingType = #{loggingType}
+    </select>
+    
+    
+    <select id="getTable" resultType="TableBean">
+        select * from tables where id = #{id}
+    </select>
+
+    <insert id="addTable" parameterType="TableBean" useGeneratedKeys="true" keyProperty="id">
+        insert into tables(name,categoryID,owner,
+        loggingType,rowCount,columnCount,
+        templateName,propertiesEX, file, createdAt) 
+        values( #{name}, #{categoryID},#{owner},
+        #{loggingType},#{rowCount},#{columnCount},
+        #{templateName},#{propertiesEX},#{file}, now())
+    </insert>
+    
+    <update id="updateTable">
+        update tables set name = #{name}, 
+        categoryID = #{categoryID},
+        owner = #{owner},
+        loggingType = #{loggingType},
+        rowCount = #{rowCount}, 
+        columnCount = #{columnCount},
+        templateName = #{templateName}, 
+        propertiesEX = #{propertiesEX},
+        file = #{file}, 
+        updatedAt = now()
+        where id = #{id}
+    </update>
+    
+    <delete id="deleteTable"> 
+        delete from tables where id = #{id} 
+    </delete>
+    
+</mapper>

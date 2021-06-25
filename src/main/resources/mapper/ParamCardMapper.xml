@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cif.dao.ParamCardMapper">
+    
+    <select id="getAllParamCards" resultType="ParamCardBean">
+        select * from paramcards where categoryID = #{categoryID}
+    </select>
+
+    <select id="getParamCardByName" resultType="ParamCardBean">
+        select * from paramcards where name = #{name}
+    </select>
+    
+    <select id="getParamCard" resultType="ParamCardBean">
+        select * from paramcards where id = #{id}
+    </select>
+
+    <insert id="addParamCard" parameterType="ParamCardBean" useGeneratedKeys="true" keyProperty="id">
+        insert into paramcards(name,owner,categoryID, file, createdAt) 
+          values( #{name}, #{owner},#{categoryID}, #{file}, now())
+    </insert>
+    
+    <update id="updateParamCard">
+        update paramcards set name = #{name}, 
+        owner = #{owner}, 
+        updatedAt = now()
+          where id = #{id}
+    </update>
+    
+    <delete id="deleteParamCard"> 
+        delete from paramcards where id = #{id} 
+    </delete>
+    
+</mapper>

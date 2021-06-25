@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cif.dao.DocMapper">
+    
+    <select id="getAllDocs" resultType="DocBean">
+        select * from docs where categoryID = #{categoryID}
+    </select>
+    
+    
+    <select id="getDoc" resultType="DocBean">
+        select * from docs where id = #{id}
+    </select>
+
+    <select id="getDocByFileName" resultType="DocBean">
+        select * from docs where name = #{name} and categoryID = #{categoryID}
+    </select>
+
+    <insert id="addDoc" parameterType="DocBean" useGeneratedKeys="true" keyProperty="id">
+        insert into docs(name,categoryID,owner,
+        size, file, createdAt) 
+          values( #{name}, #{categoryID}, #{owner}, 
+          #{size}, #{file},now())
+    </insert>
+    
+    <update id="updateDoc">
+        update docs set name = #{name}, 
+        categoryID = #{categoryID},
+        owner = #{owner}, 
+        size= #{size}, 
+        file= #{file},
+        updatedAt = now()
+          where id = #{id}
+    </update>
+    
+    <delete id="deleteDoc"> 
+        delete from docs where id = #{id} 
+    </delete>
+    
+</mapper>

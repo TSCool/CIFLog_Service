@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cif.dao.RolesMapper">
+
+    <insert id="insertRole" parameterType="RolesBean" useGeneratedKeys="true" keyProperty="id">
+        insert into roles(name,createdAt)
+          values( #{name},now())
+    </insert>
+
+    <delete id="deleteRole">
+        delete from roles where id = #{id}
+    </delete>
+
+    <update id="updateRole">
+        update roles set name = #{name},
+        updatedAt = now()
+          where id = #{id}
+    </update>
+
+    <select id="getAllRoles" resultType="RolesBean">
+        select * from roles
+    </select>
+
+
+
+    <select id="findRoleByUserId" resultType="RolesBean">
+        select r.* from roles r, user_roles u where r.id = u.roleID and u.userID = #{userId}
+    </select>
+
+    <insert id="assignRoles" useGeneratedKeys="true">
+        insert into user_roles(`userID`,roleID) values(#{userId},#{roleId)
+    </insert>
+
+    <select id="findUserRoleByUserId" resultType="UserRolesBean">
+        select * from user_roles where userID = #{userId}
+    </select>
+
+    <delete id="deleteUserRole">
+        delete from user_roles where roleID = #{id}
+    </delete>
+
+    <delete id="deleteUserRoleByUserIdAndRoleId">
+        delete from user_roles where id = #{id}
+    </delete>
+
+    <update id="updateUserRole">
+        update user_roles set roleID = #{roleId} where id = #{id}
+    </update>
+
+
+
+    <select id="findWorkspaceRoleByUserId" resultType="RolesBean">
+        select r.* from roles r, workspace_roles u where r.id = u.roleID and u.userID = #{userId}
+    </select>
+
+    <select id="findRoleByUserIdAndWsId" resultType="RolesBean">
+        select r.* from roles r, workspace_roles u where r.id = u.roleID and u.userID = #{userId} and u.workspaceID = #{workspaceId}
+    </select>
+
+    <select id="findAll" resultType="WorkspaceRoleBean">
+        select * from workspace_roles
+    </select>
+
+    <select id="findAllByUserId" resultType="WorkspaceRoleBean">
+        select * from workspace_roles where userID = #{userId}
+    </select>
+
+    <update id="updateWsUserRole">
+        update workspace_roles set userID = #{userId}, roleID = #{roleId} where id = #{id}
+    </update>
+
+    <delete id="deleteWorkSpaceUserRole">
+        delete from workspace_roles where roleID = #{id}
+    </delete>
+
+    <delete id="deleteWorkSpaceUserRoleByWsId">
+        delete from workspace_roles where workspaceID = #{id}
+    </delete>
+
+    <delete id="deleteWorkSpaceUserRoleById">
+        delete from workspace_roles where id = #{id}
+    </delete>
+
+</mapper>
