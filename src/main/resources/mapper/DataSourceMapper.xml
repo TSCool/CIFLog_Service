@@ -3,7 +3,28 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cif.dao.DataSourceMapper">
-    
 
+    <insert id="addDataSource" parameterType="DatasourceBean" useGeneratedKeys="true" keyProperty="id">
+        insert into datasource(name,createdAt)
+          values( #{name}, now())
+    </insert>
+
+    <update id="updateDataSource">
+        update datasource set name = #{name},
+        updatedAt = now()
+          where id = #{id}
+    </update>
+
+    <delete id="deleteDataSource">
+        delete from datasource where id = #{id}
+    </delete>
+
+    <select id="getAll" resultType="DatasourceBean">
+        select * from datasource
+    </select>
+
+    <select id="getDataSource" resultType="DatasourceBean">
+        select * from datasource where id = #{id}
+    </select>
     
 </mapper>

@@ -27,13 +27,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <insert id="addWorkSpace" parameterType="WorkSpaceBean" useGeneratedKeys="true" keyProperty="id">
-        insert into workspaces(name,owner,createdAt) 
-          values( #{name}, #{owner}, now())
+        insert into workspaces(name,owner,datasourceId,createdAt)
+          values( #{name}, #{owner},#{datasourceId}, now())
     </insert>
     
     <update id="updateWorkSpace">
         update workspaces set name = #{name}, 
-        owner = #{owner}, 
+        owner = #{owner},
+        datasourceId = #{datasourceId}
         updatedAt = now()
           where id = #{id}
     </update>
@@ -45,5 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="workspaceAssignUserAndRoles" useGeneratedKeys="true">
         insert into workspace_roles(workspaceID,userID,roleID) values(#{workspaceId},#{userId},#{roleId})
     </insert>
+
+    <select id="getWorkSpaceByDataSourceId" resultType="WorkSpaceBean">
+        select * from workspaces where datasourceId = #{datasourceId}
+    </select>
     
 </mapper>

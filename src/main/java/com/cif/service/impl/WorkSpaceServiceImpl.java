@@ -70,4 +70,9 @@ public class WorkSpaceServiceImpl implements WorkSpaceService {
     public int workspaceAssignUserAndRoles(int workspaceId, int userId, int roleId) {
         return workSpaceMapper.workspaceAssignUserAndRoles(workspaceId,userId,roleId);
     }
+
+    @Override
+    public WorkSpaceBean getWorkSpaceByDataSourceId(int datasourceId) {
+        return workSpaceMapper.getWorkSpaceByDataSourceId(datasourceId);
+    }
 }

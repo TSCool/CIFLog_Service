@@ -56,4 +56,11 @@ public interface WorkSpaceService {
      * @return
      */
     public int workspaceAssignUserAndRoles(@Param("workspaceId") int workspaceId, @Param("userId") int userId, @Param("roleId") int roleId);
+
+    /**
+     * 根据datasourceId获取工区信息
+     * @param datasourceId
+     * @return
+     */
+    public WorkSpaceBean getWorkSpaceByDataSourceId(int datasourceId);
 }

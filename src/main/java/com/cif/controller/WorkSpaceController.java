@@ -163,7 +163,7 @@ public class WorkSpaceController {
         @RequestMapping(value = "/ws/all",method = RequestMethod.GET)
         public ResponseEntity getAllWorkSpaces(String owner){
 
-            Map<String,Object> data = new HashMap<>();
+        Map<String,Object> data = new HashMap<>();
 
         //查询的所有工区
         WorkSpaceBean[] workSpace = null;
@@ -598,6 +598,111 @@ public class WorkSpaceController {
             return new ResponseEntity(data,HttpStatus.FORBIDDEN);
 
         }
+
+    }
+
+    /**
+     * 根据dataSourceId获取工区信息
+     * @param dataSourceId
+     * @return
+     */
+    @ApiOperation(value = "根据dataSourceId获取工区信息")
+    @RequestMapping(value = "/ws/dataSourceId",method = RequestMethod.GET)
+    public ResponseEntity getWorkSpaceByDataSourceId(HttpServletRequest request, int dataSourceId){
+
+        Map<String,Object> data = new HashMap<>();
+
+        WorkSpaceBean workSpace = null;
+
+        //根据id获取用户多个角色 -- 优先
+        Set<RolesBean> roleList = rolesService.findRoleByUserId(Integer.parseInt(request.getHeader("userId")));
+
+        Set<PermissionsBean> permissionsBeansAll = new HashSet<PermissionsBean>();
+
+        for(RolesBean rolesBean:roleList){
+
+            //根绝角色获取所有的权限
+            Set<PermissionsBean> permissionsBeansList = permissionsService.findByRoleId(rolesBean.getId());
+
+            for(PermissionsBean permissionsBean:permissionsBeansList){
+
+                //查看用户所有的权限
+                permissionsBeansAll.add(permissionsBean);
+
+            }
+
+        }
+
+        boolean isRead = false;//是否有读取的权限
+
+        //遍历权限
+        for(PermissionsBean permissionsBean:permissionsBeansAll){
+
+            //如果有读的权限,则能查看所有的工区
+            if(permissionsBean.getName().equals("r")){
+
+                isRead = true;
+
+                break;
+
+            }
+        }
+
+        //如果一级没有权限
+        if(!isRead){
+
+            //根据id获取用户在该工区的角色 -- 用户角色 关联表 -- workspace_roles
+            Set<RolesBean> wsRoleList = rolesService.findWorkspaceRoleByUserId(Integer.parseInt(request.getHeader("userId")));
+
+            for(RolesBean rolesBean:wsRoleList){
+
+                //根绝角色获取所有的权限
+                Set<PermissionsBean> permissionsBeansList = permissionsService.findByRoleId(rolesBean.getId());
+
+                for(PermissionsBean permissionsBean:permissionsBeansList){
+
+                    //查看用户所有的权限
+                    permissionsBeansAll.add(permissionsBean);
+
+                }
+
+            }
+
+            //遍历权限
+            for(PermissionsBean permissionsBean:permissionsBeansAll){
+
+                //如果有读的权限
+                if(permissionsBean.getName().equals("r")){
+
+                    //根据用户id查看对应的工区
+                    workSpace = workSpaceService.getWorkSpaceByDataSourceId(dataSourceId);
+
+                    break;
+
+                }
+            }
+
+        }else{
+
+            workSpace = workSpaceService.getWorkSpaceByDataSourceId(dataSourceId);
+
+        }
+
+        if(workSpace != null){
+
+            data.put("data",workSpace);
+
+            data.put("status",200);
+
+        }else{
+
+            data.put("data","暂无信息");
+
+            data.put("status",200);
+
+        }
+
+        return new ResponseEntity(data, HttpStatus.OK);
 
     }
 

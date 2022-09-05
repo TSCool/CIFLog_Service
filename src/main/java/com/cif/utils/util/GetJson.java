@@ -1,10 +1,15 @@
 package com.cif.utils.util;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GetJson {
 
@@ -24,9 +29,12 @@ public class GetJson {
             // 写入数据到Stringbuilder
             StringBuilder sb = new StringBuilder();
             String line = null;
-            while ((line = streamReader.readLine()) != null) {
+            while (StringUtils.isNotEmpty((line = StringEscapeUtils.unescapeJava(streamReader.readLine())))) {
                 sb.append(line);
             }
+//            String jsonStr = sb.toString();
+//            jsonStr = jsonStr.replaceAll("\\s*", "");
+//            String value = StringEscapeUtils.unescapeJava(sb.toString());
             jsonParam = JSONObject.parseObject(sb.toString());
             // 直接将json信息打印出来
             System.out.println(jsonParam.toJSONString());

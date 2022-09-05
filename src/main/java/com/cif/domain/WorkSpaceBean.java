@@ -20,6 +20,7 @@ import java.util.Set;
 public class WorkSpaceBean {
     private int id;
     private String name;
+    private int datasourceId;
     private Integer owner;
 
 //    @ManyToMany
@@ -59,7 +60,15 @@ public class WorkSpaceBean {
         this.owner = owner;
     }
 
-//    public Set<RolesBean> getRolesBeans() {
+    public int getDatasourceId() {
+        return datasourceId;
+    }
+
+    public void setDatasourceId(int datasourceId) {
+        this.datasourceId = datasourceId;
+    }
+
+    //    public Set<RolesBean> getRolesBeans() {
 //        return rolesBeans;
 //    }
 //
